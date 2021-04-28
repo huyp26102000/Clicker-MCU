@@ -1,69 +1,52 @@
 #include "EEPROM.h"
 #define EEPROM_SIZE 128
 
-int mode = 0;
+int modeW = 0;
 String another;
 String x;
 void setup() {
   Serial.begin(115200);
-  Serial.setTimeout(1);
   if (!EEPROM.begin(EEPROM_SIZE))
   {
     Serial.println("failed to initialise EEPROM"); delay(1000000);
   }
 }
 void loop() {
-  
-  while(!Serial.available())
+  while (!Serial.available())
   {
-    x = Serial.readString();
+    
   }
-  if(x.toInt()==1)
+  x = Serial.readString();
+  if(x=="read")
   {
-    Serial.println(readEEPROM());
+    Serial.print(readEEPROM());
   }
   else
   {
     write_EEPROM(x);
-//    delay(1000);
-    Serial.println(readEEPROM());
+    Serial.print("asd");
   }
-
-}
-void eraser_EEPROM()
-{
-  EEPROM.begin(EEPROM_SIZE);
-  for (int i = 0; i < 512; i++)
-  {
-    EEPROM.write(i, 0);
-  }
-  EEPROM.commit();
-  //delay(500);
+  
 }
 void write_EEPROM(String strData)
 {
-  eraser_EEPROM();
-  /*
-  EEPROM.begin(EEPROM_SIZE);
-  
+  // erase eeprom
   for(int i = 0; i < EEPROM_SIZE; i++)
   {
     EEPROM.write(i, NULL);
   }
   EEPROM.commit();
-  */
-  EEPROM.begin(EEPROM_SIZE);
+  // start writting
   for(int i = 0; i < strData.length(); i++)
   {
     EEPROM.write(i, strData[i]);
   }
   EEPROM.commit();
-  //delay(500);
 }
 String readEEPROM()
 {
   String tmpstr = "";
-  for(int i = 0; i<128; i++)
+  for(int i = 0; EEPROM.read(i)!=NULL; i++)
   {
     char tmp[1];
     sprintf(tmp, "%c", EEPROM.read(i));

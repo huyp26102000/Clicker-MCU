@@ -1,22 +1,22 @@
 #include "EEPROM.h"
-#define EEPROM_SIZE 64
+#define EEPROM_SIZE 128
 
 int mode = 0;
+struct deviceConfig()
+{
+    String ssid = "";
+    String password = "";
+    String ID = "";
+}
+deviceConfig DCongig;
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   if (!EEPROM.begin(EEPROM_SIZE))
   {
     Serial.println("failed to initialise EEPROM"); delay(1000000);
   }
 
-}
-void write_EEPROM(String strData)
-{
-  for(int i = 0; i < strData.length(); i++)
-  {
-    EEPROM.write(i, strData[i]);
-  }
 }
 void loop()
 {
@@ -24,6 +24,7 @@ void loop()
   Serial.println();
   delay(2000);
 }
+deviceConfig 
 String readEEPROM()
 {
   String tmpstr = "";
